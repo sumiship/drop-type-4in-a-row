@@ -22,3 +22,8 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## テーマ
+- 関数を別ファイルにまとめる
+- github の issue と branch を活用する
+- アニメーションにこだわる
