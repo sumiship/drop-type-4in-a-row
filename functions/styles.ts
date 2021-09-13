@@ -14,6 +14,7 @@ const coin_style = (number: number): string => {
     case 2:
       return "background-color:rgb(216, 80, 17)";
   }
+  return "";
 };
 
 export default {

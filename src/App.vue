@@ -42,7 +42,7 @@ export default class App extends Vue {
     return Styles.coin_style(number);
   }
 
-  created() {
+  created(): void {
     this.boardData = Board.create_board(this.boardSize);
   }
 }
