@@ -1,9 +1,5 @@
 const colIndex_style = (boardWidth: number): string => {
-  return (
-    "width:" +
-    100 / boardWidth +
-    "%; padding-top: 15%; background-color: #F5DEB3"
-  );
+  return "width:" + 100 / boardWidth + "%;";
 };
 const coin_style = (number: number): string => {
   switch (number) {
@@ -11,7 +7,7 @@ const coin_style = (number: number): string => {
       return "background-color: white";
     case 1:
       return "background-color:cadetblue";
-    case 2:
+    case -1:
       return "background-color:rgb(216, 80, 17)";
   }
   return "";
