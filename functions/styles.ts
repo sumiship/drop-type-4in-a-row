@@ -1,7 +1,7 @@
 const colIndex_style = (boardWidth: number): string => {
   return "width:" + 100 / boardWidth + "%;";
 };
-const coin_style = (number: number): string => {
+const player_style = (number: number): string => {
   switch (number) {
     case 0:
       return "background-color: white";
@@ -15,5 +15,5 @@ const coin_style = (number: number): string => {
 
 export default {
   colIndex_style,
-  coin_style,
+  player_style,
 };
