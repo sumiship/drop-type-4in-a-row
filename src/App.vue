@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="baseBox">
-      <div class="clickSpace"></div>
+      <!-- <div class="clickSpace"></div> -->
       <div class="board">
         <div class="board__status">
           <span v-if="gameStatus == 0">準備中</span
@@ -165,6 +165,7 @@ export default class App extends Vue {
   // }
   &__status {
     position: absolute;
+    font-size: 1.3vw;
     top: 5px;
     left: 50%;
     padding: 0 5px;
@@ -208,7 +209,7 @@ export default class App extends Vue {
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 0.7rem;
+    font-size: 2.3vw;
     padding: 0 5px;
     color: rgb(212, 164, 92);
     box-shadow: 0px 0px 4px 1px rgb(43, 42, 42);
@@ -218,10 +219,18 @@ export default class App extends Vue {
     &--center {
       left: 50%;
       @extend %__button;
+      &:active {
+        // box-shadow: none;
+        box-shadow: 0px 0px 8px -1px rgb(104, 98, 98) inset;
+      }
     }
     &--right {
       left: 75%;
       @extend %__button;
+      &:active {
+        // box-shadow: none;
+        box-shadow: 0px 0px 8px -1px rgb(104, 98, 98) inset;
+      }
     }
   }
 }
