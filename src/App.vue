@@ -37,6 +37,13 @@
         </div>
         <div
           v-if="gameStatus == 1"
+          class="control__button--left"
+          @click="endGame()"
+        >
+          終わる
+        </div>
+        <div
+          v-if="gameStatus == 1"
           class="control__color"
           :style="control_color_style()"
         ></div>
@@ -216,6 +223,14 @@ export default class App extends Vue {
     cursor: pointer;
   }
   &__button {
+    &--left {
+      left: 25%;
+      @extend %__button;
+      &:active {
+        // box-shadow: none;
+        box-shadow: 0px 0px 8px -1px rgb(104, 98, 98) inset;
+      }
+    }
     &--center {
       left: 50%;
       @extend %__button;
