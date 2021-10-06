@@ -4,61 +4,27 @@
       <!-- <div class="clickSpace"></div> -->
       <div class="board">
         <div class="board__status">
-          <span v-if="gameStatus == 0">準備中</span
-          ><span v-if="gameStatus == 1">試合中</span>
+          <span v-if="gameStatus == 0">準備中</span><span v-if="gameStatus == 1">試合中</span>
           <span v-if="gameStatus == 2">ＥＮＤ</span>
         </div>
-        <div
-          class="board__col"
-          :style="colIndex_style"
-          v-for="colIndex in boardSize[1]"
-          :key="colIndex"
-          @click="putCoin(colIndex - 1)"
-        >
-          <div
-            class="board__cell"
-            v-for="cellIndex in boardSize[0]"
-            :key="cellIndex"
-          >
-            <div
-              class="coin"
-              :style="coin_style(boardData[cellIndex - 1][colIndex - 1])"
-            ></div>
+        <div class="board__col" :style="colIndex_style" v-for="colIndex in boardSize[1]" :key="colIndex" @click="putCoin(colIndex - 1)">
+          <div class="board__cell" v-for="cellIndex in boardSize[0]" :key="cellIndex">
+            <div class="coin" :style="coin_style(boardData[cellIndex - 1][colIndex - 1])"></div>
           </div>
         </div>
       </div>
       <div class="control">
-        <div
-          v-if="gameStatus == 0"
-          class="control__button--center"
-          @click="game_start()"
-        >
+        <div v-if="gameStatus == 0" class="control__button--center" @click="game_start()">
           Start
         </div>
-        <div
-          v-if="gameStatus == 1"
-          class="control__button--left"
-          @click="endGame()"
-        >
+        <div v-if="gameStatus == 1" class="control__button--left" @click="endGame()">
           終わる
         </div>
-        <div
-          v-if="gameStatus == 1"
-          class="control__color"
-          :style="control_color_style()"
-        ></div>
-        <div
-          v-if="gameStatus == 1 && putMemory.length >= 1"
-          class="control__button--right"
-          @click="putBack()"
-        >
+        <div v-if="gameStatus == 1" class="control__color" :style="control_color_style()"></div>
+        <div v-if="gameStatus == 1 && putMemory.length >= 1" class="control__button--right" @click="putBack()">
           待った
         </div>
-        <div
-          v-if="gameStatus == 2"
-          class="control__button--center"
-          @click="endGame()"
-        >
+        <div v-if="gameStatus == 2" class="control__button--center" @click="endGame()">
           終わる
         </div>
       </div>
@@ -157,7 +123,7 @@ export default class App extends Vue {
 }
 .board {
   // background-color: #f5deb3;
-  background-image: url(~@/assets/wood2.png);
+  background-image: url(~@/assets/wood2.webp);
   position: relative;
   border-radius: 30px;
   padding: 30px 0;
@@ -178,7 +144,7 @@ export default class App extends Vue {
     padding: 0 5px;
     color: rgb(63, 40, 33);
     transform: translateX(-50%);
-    background-image: url(~@/assets/wood.jpg);
+    background-image: url(~@/assets/wood.webp);
     box-shadow: 0px 0px 8px -1px rgb(43, 42, 42) inset;
   }
 }
@@ -196,7 +162,7 @@ export default class App extends Vue {
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 70%);
-  background-image: url(~@/assets/wood1.png);
+  background-image: url(~@/assets/wood1.webp);
   background-size: cover;
   border-radius: 10px;
   box-shadow: 0 -3px 5px 0 rgb(65, 63, 63);
@@ -212,7 +178,7 @@ export default class App extends Vue {
     box-shadow: 0px 0px 8px -1px rgb(43, 42, 42) inset;
   }
   %__button {
-    background-image: url(~@/assets/wood3.png);
+    background-image: url(~@/assets/wood3.webp);
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
