@@ -6,11 +6,7 @@ const create_board = (boardSize: number[]): number[][] => {
   return board;
 };
 
-const find_nullCell = (
-  col: number,
-  boardSize: number[],
-  boardData: number[][]
-): number[] => {
+const find_nullCell = (col: number, boardSize: number[], boardData: number[][]): number[] => {
   const putCell = [-1, col];
   for (let i = 0; i < boardSize[0]; i++) {
     if (boardData[i][col] != 0) break;
@@ -26,28 +22,13 @@ const direction = [
   [1, 1],
 ];
 const isInBoard = (boardSize: number[], searchCell: number[]): boolean => {
-  if (
-    searchCell[0] >= 0 &&
-    searchCell[0] < boardSize[0] &&
-    searchCell[1] >= 0 &&
-    searchCell[1] < boardSize[1]
-  )
-    return true;
+  if (searchCell[0] >= 0 && searchCell[0] < boardSize[0] && searchCell[1] >= 0 && searchCell[1] < boardSize[1]) return true;
   return false;
 };
-const arrayAddTimes = (
-  arr1: number[],
-  arr2: number[],
-  times: number
-): number[] => {
+const arrayAddTimes = (arr1: number[], arr2: number[], times: number): number[] => {
   return [arr1[0] + arr2[0] * times, arr1[1] + arr2[1] * times];
 };
-const judge = (
-  boardData: number[][],
-  boardSize: number[],
-  putCell: number[],
-  player: number
-): boolean => {
+const judge = (boardData: number[][], boardSize: number[], putCell: number[], player: number): boolean => {
   for (let i = 0; i < 4; i++) {
     let chainCount = 0;
     for (let j = -3; j <= 3; j++) {
@@ -64,8 +45,19 @@ const judge = (
   return false;
 };
 
+const boardScore = (board: number[][], putCell: number[], player: number, boardSize: number[]): number => {
+  const gameSet = judge(board, boardSize, putCell, player);
+  // console.log("----");
+  // console.log(putCell, player);
+  // console.log(board);
+  // console.log(gameSet);
+  if (gameSet) return 100 * player;
+  return 0;
+};
+
 export default {
   create_board,
   find_nullCell,
   judge,
+  boardScore,
 };

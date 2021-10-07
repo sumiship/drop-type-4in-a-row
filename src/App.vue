@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div class="com" v-if="true" @click="com()">コンピュータ君</div>
     <div class="baseBox">
       <!-- <div class="clickSpace"></div> -->
       <div class="board">
@@ -74,6 +75,46 @@ export default class App extends Vue {
     }
   }
 
+  private com() {
+    console.log("start");
+    this.putCoin(this.bestSearch(this.boardData, this.player, 6, [-1, -1])[1]);
+  }
+
+  private bestSearch(board: number[][], player: number, deep: number, putCell: number[]): number[] {
+    // console.log(`start${deep},putcell:${putCell},player:${player}`);
+    if (deep <= 0) return [Board.boardScore(board, putCell, player * -1, this.boardSize), -1];
+    if (Board.judge(board, this.boardSize, putCell, player * -1)) {
+      // console.log(`ピンチ！ 深さ：${deep} player:${player}, ここ:${putCell}`);
+      // console.log(board);
+      return [100 * player * -1, -1];
+    }
+    let bestScore = -100000 * player;
+    let bestCell: number[] = [];
+    for (let i = 0; i < 9; i++) {
+      const putCell = Board.find_nullCell(i, this.boardSize, board);
+      if (putCell[0] == -1) continue;
+      const copyBoard = JSON.parse(JSON.stringify(board));
+      copyBoard[putCell[0]].splice(putCell[1], 1, player);
+
+      const colScore = this.bestSearch(copyBoard, player * -1, deep - 1, putCell);
+      // console.log("----");
+      // console.log(deep, i);
+      // console.log(copyBoard, colScore);
+      if ((colScore[0] - bestScore) * player > 0) {
+        bestCell = [i];
+        bestScore = colScore[0];
+      } else if (colScore[0] - bestScore == 0) {
+        bestCell.push(i);
+      }
+    }
+    // if (deep == 6) {
+    //   console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // ${bestCell}`);
+    //   console.log(`score:${bestScore}`);
+    // }
+    return [bestScore, bestCell.splice(Math.floor(Math.random() * bestCell.length), 1)[0]];
+  }
+
   private putBack(): void {
     const backCell = this.putMemory.pop();
     if (backCell) this.boardData[backCell[0]][backCell[1]] = 0; //この if 文はいらないけど、typescript に怒られるから暫定的に追加
@@ -96,6 +137,22 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+.com {
+  font-size: 3rem;
+  display: inline-block;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: cornsilk;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 0 black;
+  &:hover {
+    background-color: blanchedalmond;
+    cursor: pointer;
+  }
+  &:active {
+    box-shadow: inset 0 0 5px 0 black;
+  }
+}
 * {
   margin: 0;
   padding: 0;
@@ -111,7 +168,7 @@ export default class App extends Vue {
 }
 .baseBox {
   width: 90%;
-  max-width: 1000px;
+  // max-width: 1000px;
   position: absolute;
   top: 50%;
   left: 50%;
