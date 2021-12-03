@@ -3,6 +3,7 @@ const create_board = (boardSize: number[]): number[][] => {
   [...Array(boardSize[0])].map(() => {
     board.push(Array(boardSize[1]).fill(0));
   });
+
   return board;
 };
 
@@ -45,14 +46,17 @@ const judge = (boardData: number[][], boardSize: number[], putCell: number[], pl
   return false;
 };
 
-const boardScore = (board: number[][], putCell: number[], player: number, boardSize: number[]): number => {
+const boardScore = (board: number[][], putCell: number[], player: number, boardSize: number[]): number[] => {
   const gameSet = judge(board, boardSize, putCell, player);
-  // console.log("----");
-  // console.log(putCell, player);
-  // console.log(board);
-  // console.log(gameSet);
-  if (gameSet) return 100 * player;
-  return 0;
+  if (gameSet) return [100 * player, 100 * player];
+  // let score = 0;
+  // board.forEach((row) => {
+  //   row.forEach((cell, index) => {
+  //     if (index >= boardSize[1] / 4 && index <= (boardSize[1] * 3) / 4 && cell == player) score++;
+  //   });
+  // }, 0);
+  // return score;
+  return [0, 0];
 };
 
 export default {

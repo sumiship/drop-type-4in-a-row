@@ -77,34 +77,49 @@ export default class App extends Vue {
 
   private com() {
     console.log("start");
-    this.putCoin(this.bestSearch(this.boardData, this.player, 6, [-1, -1])[1]);
+    this.putCoin(this.bestSearch(this.boardData, this.player, 6, [-1, -1])[2]);
   }
 
   private bestSearch(board: number[][], player: number, deep: number, putCell: number[]): number[] {
-    // console.log(`start${deep},putcell:${putCell},player:${player}`);
-    if (deep <= 0) return [Board.boardScore(board, putCell, player * -1, this.boardSize), -1];
+    // if (deep > 3) console.log("-------");
+    // if (deep > 3) console.log(`start${deep},putcell:${putCell},player:${player}`);
+    // if (deep > 3) console.log(board);
+    if (deep <= 0) return [...Board.boardScore(board, putCell, player * -1, this.boardSize), -1];
     if (Board.judge(board, this.boardSize, putCell, player * -1)) {
       // console.log(`ピンチ！ 深さ：${deep} player:${player}, ここ:${putCell}`);
       // console.log(board);
-      return [100 * player * -1, -1];
+      return [100 * player * -1, 100 * player * -1, -1];
     }
     let bestScore = -100000 * player;
+    let bestAve = -100000 * player;
     let bestCell: number[] = [];
-    for (let i = 0; i < 9; i++) {
+    let sum = 0;
+
+    for (let i = 0; i < this.boardSize[1]; i++) {
       const putCell = Board.find_nullCell(i, this.boardSize, board);
       if (putCell[0] == -1) continue;
       const copyBoard = JSON.parse(JSON.stringify(board));
       copyBoard[putCell[0]].splice(putCell[1], 1, player);
 
       const colScore = this.bestSearch(copyBoard, player * -1, deep - 1, putCell);
+      colScore[0] *= 0.8;
+      sum += colScore[0];
+      // if (deep > 3) console.log(colScore);
       // console.log("----");
       // console.log(deep, i);
       // console.log(copyBoard, colScore);
       if ((colScore[0] - bestScore) * player > 0) {
         bestCell = [i];
         bestScore = colScore[0];
+        bestAve = colScore[1];
       } else if (colScore[0] - bestScore == 0) {
-        bestCell.push(i);
+        if ((colScore[1] - bestAve) * player > 0) {
+          bestCell = [i];
+          bestScore = colScore[0];
+          bestAve = colScore[1];
+        } else {
+          bestCell.push(i);
+        }
       }
     }
     // if (deep == 6) {
@@ -112,7 +127,20 @@ export default class App extends Vue {
     // ${bestCell}`);
     //   console.log(`score:${bestScore}`);
     // }
-    return [bestScore, bestCell.splice(Math.floor(Math.random() * bestCell.length), 1)[0]];
+    if (deep > 4) {
+      console.log(`FINDEEP: ${deep}  cells:${bestCell} score:${bestScore} ave:${sum / this.boardSize[1]}`);
+    }
+
+    return [bestScore, sum / this.boardSize[1] ** 2, this.picCellFromBestCells(bestCell)];
+  }
+
+  picCellFromBestCells(bestCells: number[]): number {
+    const goodRange = { min: this.boardSize[1] / 4, max: (this.boardSize[1] * 3) / 4 };
+    const goodRangeCells = bestCells.filter((cell) => cell >= goodRange.min && cell <= goodRange.max);
+    if (goodRangeCells.length == 0) {
+      return bestCells[Math.floor(Math.random() * bestCells.length)];
+    }
+    return goodRangeCells[Math.floor(Math.random() * goodRangeCells.length)];
   }
 
   private putBack(): void {
